@@ -18,7 +18,16 @@ Fortunately, there are public datasets containing historical, quantitative weath
 
 The dataset containing information about wildfires, obtained from [`fire.ca.gov`](https://fire.ca.gov), provides wide-ranging resources relating to every documented wildfire in California since 2013. However, we only care about a small subsection: the dates that fires started in Riverside County. To get this subset of the CSV file, I imported it as a pandas Dataframe, and filtered rows by checking the  'incident_county' column for entries of 'Riverside'. Then, I extracted the 'incident_date_created' field (don't worry, it's not an inside job) from every such row.
 
-Preprocessing of the weather dataset, found on [`https://noaa.gov`](https://noaa.gov), was significantly more involved. As is often the case in the real world, the data collection tools were imperfect, and frequently failed to record any value. Further, the numerical data was still in string form, often (but not always) with units attached. Given the sheer size of the Dataframe, with ten years of hourly records, you can imagine why manually fixing these problems was infeasible. Instead, I wrote expressions that trimmed unnecessary fields, extracted the meaningful parts of others, and removed or replaced data where it was sparse.
+Preprocessing of the weather dataset, found on [`https://noaa.gov`](https://noaa.gov), was significantly more involved. As is often the case in the real world, the data collection tools were imperfect, and frequently failed to record any value. Further, the numerical data was still in string form, often (but not always) with units attached. Given the sheer size of the Dataframe, with ten years of hourly records, you can imagine why manually fixing these problems was infeasible. Instead, I wrote expressions that trimmed unnecessary fields, extracted the meaningful parts of others, and removed or replaced data where it was sparse. (Note: I only took one sample every day, between noon and 1 p.m., since the warm hours of the day vary by season, but noon is almost always among them) In the end, I narrowed down the input features to:
+```python
+important_vars = ['HourlyDryBulbTemperature', 'HourlyPrecipitation', 
+                'HourlyPressureChange', 'HourlyRelativeHumidity', 
+                'HourlyStationPressure', 
+                'HourlyWindSpeed', 
+                'cloud cover percentage']
+```
+
+Many of the other columns just contained values linearly dependent on the ones included.
 
 ![](assets/IMG/weather_preprocessing.PNG){: width="500" }
 
@@ -30,7 +39,7 @@ Preprocessing of the weather dataset, found on [`https://noaa.gov`](https://noaa
 
 ## Modeling
 
-As the goal of this project was to produce an estimation of the probability of a fire starting on a given day, I had to choose a model that would output probabilities. Of the models that we learned about in this class, only two can achieve this: linear regression and neural networks. As my dataset is significantly smaller once preprocessing is done (~3000), and neural networks tend to work better on immense datasets, I chose to use a logistic regression model.
+As the goal of this project was to produce an estimation of the probability of a fire starting on a given day, I had to choose a model that would output probabilities. Of the models that we learned about in this class, only two can achieve this: linear regression and neural networks. As my dataset is significantly smaller once preprocessing is done (~3000), and neural networks tend to work better on immense datasets, I chose to use a logistic regression model. 
 
 First, I split the data into train and test sets.
 ```python
@@ -79,7 +88,6 @@ y_pred = model.predict(X_test)
 y_proba = model.predict_proba(X_test)
 ```
 
-
 ## Results
 
 ![](assets/IMG/conf_mat.PNG){: width="500" }
@@ -92,20 +100,18 @@ y_proba = model.predict_proba(X_test)
 
 ## Discussion
 
-From Figure X, one can see that... [interpretation of Figure X].
+Figure 3 shows the confusion matrix, or the distribution of true positives, false positives, true negatives, and true positives, among the predictions. This matrix shows us that the model's strength is in identifying negatives, i.e., correctly predicting when there will not be a fire. Here, the false positive rate is 10/(397+10)~=0.025. This is with the default decision threshold of 0.5. However, since we might want to prepare for the worst case scenario for a disaster like a fire, perhaps for a more practical application of the risk assessment, the threshold should be lowered. This would cause the model to identify more true positives.
+
+Figure 4 shows the Receiver Operating Characteristic (ROC) curve, which gives the true positive rate (TPR) and false positive rate (FPR) at all decision thresholds. This shows how our model would perform when parameterized by the most important tuning variable, the decision threshold. Let's say we wanted a TPR of 1. Then we can see that decision threshold meeting this criteria would correspond to a minimum FPR of ~0.75. Also included in this figure is the Area Under the Curve (AUC). This gives a more general overview of how a model performs for different applications (i.e., sensitivities). Since a random classifier has a AUC of 0.5, that means the model provides meaningful insight.
 
 ## Conclusion
 
-Here is a brief summary. From this work, the following conclusions can be made:
-* first conclusion
-* second conclusion
+Overall, I think that this was a productive exercise in practical application of modern machine learning tools. It's incredible the ease Python and the scikit-learn library grant to solving problems with machine learning. What remains difficult, however, is the troubles of dealing with the inconsistencies that pervade data in the real world. I could spend hours more just on the preprocessing step of this project. Other issues inherent to the nature of the data available are its scope and detail. I was unable to find any individual, comprehensive, state-wide and county-level weather database. Such a database would make it far easier to apply a similar process to other counties, but as it is, I was only able to work on this one. The issue of detail is that the wildfire database only had dates that the wildfire started, and no exact time. This means that my weather samples taken at between 12 and 1 p.m. every day could be influenced by the existence of a fire that had already started. However, given the size of Riverside county and the speed with which a fire would need to spread to have an influence on the weather the same day it was recorded, I don't think this is a major concern.
 
-Here is how this work could be developed further in a future project.
-
-Limitations:
-* Biased towards predicting fires because of resampling
+To my chagrin, I do think that the results of this project should be taken with a grain of salt. Given California's heavy investments in wildfire prevention--$3.7 Billion in the 2021-2022 budget[1]--I think it is extremely unlikely that I have come close to treading new ground. This is hard to ascertain though, given the California Department of Forestry and Fire Protection's lack of clarity in their research. Their R&D webpage[2] does not contain any links to publications or reports, or specifics about their development of AI. In the interest of the tens of millions living in the state that their department is responsible for keeping safe, I think that they should provide their methods to the public, so that we can also contribute to this cause.
 
 ## References
-
+[1] https://lao.ca.gov/Publications/Report/4495
+[2] https://www.fire.ca.gov/what-we-do/research-and-development
 [back](./)
 
