@@ -1,1 +1,1 @@
-Fire Hazard Evaluation ML Project for A&O SCI C111 at UCLA: [here is a link to another file, `project.md`](project.md)
+Fire Hazard Evaluation ML Project for A&O SCI C111 at UCLA: (project.md)
