@@ -16,11 +16,17 @@ Fortunately, there are public datasets containing historical, quantitative weath
 
 ## Data
 
-Here is an overview of the dataset, how it was obtained and the preprocessing steps taken, with some plots!
+The dataset containing information about wildfires, obtained from [`fire.ca.gov`](fire.ca.gov), provides wide-ranging resources relating to every documented wildfire in California since 2013. However, we only care about a small subsection: the dates that fires started in Riverside County. To get this subset of the CSV file, I imported it as a pandas Dataframe, and filtered rows by checking the  'incident_county' column for entries of 'Riverside'. Then, I extracted the 'incident_date_created' field (don't worry, it's not an inside job) from every such row.
 
-![](assets/IMG/datapenguin.png){: width="500" }
+Preprocessing of the weather dataset, found on [`noaa.gov`](noaa.gov), was significantly more involved. As is often the case in the real world, the data collection tools were imperfect, and frequently failed to record any value. Further, the numerical data was still in string form, often (but not always) with units attached. Given the sheer size of the Dataframe, with ten years of hourly records, you can imagine why manually fixing these problems was infeasible. Instead, I wrote expressions that trimmed unnecessary fields, extracted the meaningful parts of others, and removed or replaced data where it was sparse.
 
-*Figure 1: Here is a caption for my diagram. This one shows a pengiun [1].*
+![](assets/IMG/weather_preprocessing.png){: width="500" }
+
+*Figure 1: The code described above.*
+
+![](assets/IMG/dataframe_after_processing.png){: width="500" }
+
+*Figure 2: A subsection of the processed weather data, displayed in a pandas Dataframe.*
 
 ## Modeling
 
@@ -56,8 +62,6 @@ Here is a brief summary. From this work, the following conclusions can be made:
 Here is how this work could be developed further in a future project.
 
 ## References
-[1] noaa.gov
-[2] fire.ca.gov
 
 [back](./)
 
