@@ -1,5 +1,3 @@
-## My Project
-
 I applied machine learning techniques to investigate the associations between weather conditions and wildfires in Riverside County, CA. Below is my report.
 
 ***
