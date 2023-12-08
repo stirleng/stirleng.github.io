@@ -32,19 +32,53 @@ Preprocessing of the weather dataset, found on [`https://noaa.gov`](https://noaa
 
 As the goal of this project was to produce an estimation of the probability of a fire starting on a given day, I had to choose a model that would output probabilities. Of the models that we learned about in this class, only two can achieve this: linear regression and neural networks. As my dataset is significantly smaller once preprocessing is done (~3000), and neural networks tend to work better on immense datasets, I chose to use a logistic regression model.
 
-First, I split the data into train and test sets. Then, I used the Synthetic Minority Oversampling Technique (SMOTE) to balance the dataset, as without a balanced dataset, the model could be very accurate just by predicting that there would be no fire, every single day. Then, I scaled the data features, to allow the model to more rapidly converge in training. I fit an sklearn StandardScaler() to the input features training data, and then transformed both the input features training data and the input features test data.
-
-Finally, I fit the model to the training data, and made predictions. Below are the results.
-<!-- 
-
+First, I split the data into train and test sets.
 ```python
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.datasets import make_classification
-X, y = make_classification(n_features=4, random_state=0)
-clf = ExtraTreesClassifier(n_estimators=100, random_state=0)
-clf.fit(X, y)
-clf.predict([[0, 0, 0, 0]])
-``` -->
+X = weather_df
+X_train, X_test, y_train, y_test = train_test_split(X.drop(['is_fire'], axis=1), X['is_fire'], test_size=0.2)
+```
+
+Then, I used the Synthetic Minority Oversampling Technique (SMOTE) to balance the dataset, as with an imbalanced dataset, the model could be very accurate just by predicting that there would be no fire, every single day.
+```python
+SMOTE = SMOTE()
+X_train_SMOTE, y_train_SMOTE = SMOTE.fit_resample(X_train, y_train)
+```
+
+Then, I scaled the data features, to allow the model to more rapidly converge in training. I fit an sklearn StandardScaler() to the input features training data, and then transformed both the input features training data and the input features test data.
+```python
+#use a scitkit learn scaler so that we can use it later for new data points:
+scaler_input = StandardScaler()
+scaler_input.fit(X_train_SMOTE)
+data_scaled_train = scaler_input.transform(X_train_SMOTE)
+data_scaled_test = scaler_input.transform(X_test)
+
+#put the scaled data back into a dataframe
+data_scaled_train = pd.DataFrame(data_scaled_train)
+data_scaled_train.index = X_train_SMOTE.index
+mapcols = {}
+for idx in range(len(X_train_SMOTE.columns)):
+    mapcols[idx] = X_train_SMOTE.columns[idx]
+X_train_SMOTE = data_scaled_train.rename(columns=mapcols)
+
+data_scaled_test = pd.DataFrame(data_scaled_test)
+data_scaled_test.index = X_test.index
+mapcols = {}
+for idx in range(len(X_test.columns)):
+    mapcols[idx] = X_test.columns[idx]
+X_test = data_scaled_test.rename(columns=mapcols)
+```
+
+Finally, I fit the model to the training data, and made predictions. Further below are the results.
+```python
+model = LogisticRegression()
+# Train the model on the training data
+model.fit(X_train_SMOTE, y_train_SMOTE)
+
+# Make predictions on the test data
+y_pred = model.predict(X_test)
+y_proba = model.predict_proba(X_test)
+```
+
 
 ## Results
 
