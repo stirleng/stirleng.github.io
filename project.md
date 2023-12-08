@@ -112,6 +112,7 @@ To my chagrin, I do think that the results of this project should be taken with 
 
 ## References
 [1] https://lao.ca.gov/Publications/Report/4495
+
 [2] https://www.fire.ca.gov/what-we-do/research-and-development
 [back](./)
 
