@@ -6,13 +6,13 @@ I applied machine learning techniques to investigate the associations between we
 
 ## Introduction 
 
-If you are one of the 39 million people currently living in California, then you have heard about our fire season. Wildfires are one of the greatest natural threats to the people of California. Every few years, preventative power outages cover the state, thousands are evacuated, and communities are burned to the ground. 
+If you are one of the 39 million people currently living in California, then you have heard about our fire season. Wildfires are one of the greatest natural threats to the people of California. Every few years, preventative power outages cover the state, thousands are evacuated, and communities are burned to the ground.
 
-![](assets/IMG/2023_stats){: width="500" }
+![](assets/IMG/2023_stats.png){: width="800" }
 
-There is some dataset that we can use to help solve this problem. This allows a machine learning approach. This is how I will solve the problem using supervised/unsupervised/reinforcement/etc. machine learning.
+When fires spread quickly, as is often the case with high winds, minimizing response time is critical in order to prevent polynomial growth in the area burned. If we can more effectively allocate resources towards high-fire-risk areas, then we can limit the resulting spread. Thus, being able to assess the probability of a fire is useful for fire safety. My goal with this project was to make such a tool.
 
-We did this to solve the problem. We concluded that...
+Fortunately, there are public datasets containing historical, quantitative weather and wildfire data. This means that I can use machine learning to attempt to solve this problem. Using the sklearn library, we can associate input variables (weather data from a given day) with an output variable (whether or not there was a fire in the area that day), train a model to detect how the input variables influence the output variable, and make a prediction as to the probability of the output variable taking on a certain value. This is the idea of supervised learning.
 
 ## Data
 
@@ -22,7 +22,7 @@ Here is an overview of the dataset, how it was obtained and the preprocessing st
 
 *Figure 1: Here is a caption for my diagram. This one shows a pengiun [1].*
 
-## Modelling
+## Modeling
 
 Here are some more details about the machine learning approach, and why this was deemed appropriate for the dataset. 
 
@@ -56,7 +56,8 @@ Here is a brief summary. From this work, the following conclusions can be made:
 Here is how this work could be developed further in a future project.
 
 ## References
-[1] DALL-E 3
+[1] noaa.gov
+[2] fire.ca.gov
 
 [back](./)
 
