@@ -1,4 +1,4 @@
-I applied machine learning techniques to investigate the associations between weather conditions and wildfires in Riverside County, CA. Below is my report.
+I applied machine learning techniques to investigate the associations between weather conditions and wildfires in Riverside County, California. Below is my report.
 
 ***
 
@@ -8,13 +8,13 @@ If you are one of the 39 million people currently living in California, then you
 
 ![](assets/IMG/2023_stats.png){: width="800" }
 
-When fires spread quickly, as is often the case with high winds, minimizing response time is critical in order to prevent polynomial growth in the area burned. If we can more effectively allocate resources towards high-fire-risk areas, then we can limit the resulting spread. Thus, being able to assess the probability of a fire is useful for fire safety. My goal with this project was to make such a tool, specifically, to predict the probability of a fire starting on a given day in Riverside County, California.
+When fires spread quickly, as is often the case with high winds, minimizing response time is critical in order to prevent polynomial growth in the area burned. If we can more effectively allocate resources towards high-fire-risk areas, then we can limit the resulting spread. Thus, being able to assess the probability of a fire is useful for fire safety. My goal with this project was to make such a tool, specifically, to predict the probability of a fire starting on a given day in Riverside County.
 
 Fortunately, there are public datasets containing historical, quantitative weather and wildfire data. This means that I can use machine learning to attempt to solve this problem. Using the sklearn library, we can associate input variables (weather data from a given day) with an output variable (whether or not there was a fire in the area that day), train a model to detect how the input variables influence the output variable, and make a prediction as to the probability of the output variable taking on a certain value. This is the idea of supervised learning.
 
 ## Data
 
-The dataset containing information about wildfires, obtained from [`fire.ca.gov`](https://fire.ca.gov), provides wide-ranging resources relating to every documented wildfire in California since 2013. However, we only care about a small subsection: the dates that fires started in Riverside County. To get this subset of the CSV file, I imported it as a pandas Dataframe, and filtered rows by checking the  'incident_county' column for entries of 'Riverside'. Then, I extracted the 'incident_date_created' field (don't worry, it's not an inside job) from every such row.
+The dataset containing information about wildfires, obtained from [`fire.ca.gov`](https://fire.ca.gov), provides wide-ranging resources relating to every documented wildfire in California since 2013. However, we only care about a small subsection: the dates that fires started, specifically those in Riverside County. To get this subset of the CSV file, I imported it as a pandas Dataframe, and filtered rows by checking the  'incident_county' column for entries of 'Riverside'. Then, I extracted the 'incident_date_created' field (don't worry, it's not an inside job) from every such row.
 
 Preprocessing of the weather dataset, found on [`https://noaa.gov`](https://noaa.gov), was significantly more involved. As is often the case in the real world, the data collection tools were imperfect, and frequently failed to record any value. Further, the numerical data was still in string form, often (but not always) with units attached. Given the sheer size of the Dataframe, with ten years of hourly records, you can imagine why manually fixing these problems was infeasible. Instead, I wrote expressions that trimmed unnecessary fields, extracted the meaningful parts of others, and removed or replaced data where it was sparse. (Note: I only took one sample every day, between noon and 1 p.m., since the warm hours of the day vary by season, but noon is almost always among them) In the end, I narrowed down the input features to:
 ```python
