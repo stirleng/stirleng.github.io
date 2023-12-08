@@ -1,4 +1,4 @@
-I applied machine learning techniques to investigate the associations between weather conditions and wildfires in Riverside County, California. Below is my report.
+## Applications of Logistic Regression to Predict Wildfire Ignition in Riverside County
 
 ***
 
