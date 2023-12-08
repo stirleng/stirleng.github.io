@@ -10,7 +10,7 @@ If you are one of the 39 million people currently living in California, then you
 
 ![](assets/IMG/2023_stats.png){: width="800" }
 
-When fires spread quickly, as is often the case with high winds, minimizing response time is critical in order to prevent polynomial growth in the area burned. If we can more effectively allocate resources towards high-fire-risk areas, then we can limit the resulting spread. Thus, being able to assess the probability of a fire is useful for fire safety. My goal with this project was to make such a tool.
+When fires spread quickly, as is often the case with high winds, minimizing response time is critical in order to prevent polynomial growth in the area burned. If we can more effectively allocate resources towards high-fire-risk areas, then we can limit the resulting spread. Thus, being able to assess the probability of a fire is useful for fire safety. My goal with this project was to make such a tool, specifically, to predict the probability of a fire starting on a given day in Riverside County, California.
 
 Fortunately, there are public datasets containing historical, quantitative weather and wildfire data. This means that I can use machine learning to attempt to solve this problem. Using the sklearn library, we can associate input variables (weather data from a given day) with an output variable (whether or not there was a fire in the area that day), train a model to detect how the input variables influence the output variable, and make a prediction as to the probability of the output variable taking on a certain value. This is the idea of supervised learning.
 
@@ -30,9 +30,12 @@ Preprocessing of the weather dataset, found on [`https://noaa.gov`](https://noaa
 
 ## Modeling
 
-Here are some more details about the machine learning approach, and why this was deemed appropriate for the dataset. 
+As the goal of this project was to produce an estimation of the probability of a fire starting on a given day, I had to choose a model that would output probabilities. Of the models that we learned about in this class, only two can achieve this: linear regression and neural networks. As my dataset is significantly smaller once preprocessing is done (~3000), and neural networks tend to work better on immense datasets, I chose to use a logistic regression model.
 
-The model might involve optimizing some quantity. You can include snippets of code if it is helpful to explain things.
+First, I split the data into train and test sets. Then, I used the Synthetic Minority Oversampling Technique (SMOTE) to balance the dataset, as without a balanced dataset, the model could be very accurate just by predicting that there would be no fire, every single day. Then, I scaled the data features, to allow the model to more rapidly converge in training. I fit an sklearn StandardScaler() to the input features training data, and then transformed both the input features training data and the input features test data.
+
+Finally, I fit the model to the training data, and made predictions. Below are the results.
+<!-- 
 
 ```python
 from sklearn.ensemble import ExtraTreesClassifier
@@ -41,13 +44,17 @@ X, y = make_classification(n_features=4, random_state=0)
 clf = ExtraTreesClassifier(n_estimators=100, random_state=0)
 clf.fit(X, y)
 clf.predict([[0, 0, 0, 0]])
-```
-
-This is how the method was developed.
+``` -->
 
 ## Results
 
-Figure X shows... [description of Figure X].
+![](assets/IMG/conf_mat.PNG){: width="500" }
+
+*Figure 3: The confusion matrix, where 1 indicates a fire and 0 no fire on a given day.*
+
+![](assets/IMG/ROC_curve.PNG){: width="500" }
+
+*Figure 4: The ROC curve, with an AUC score of 0.80*
 
 ## Discussion
 
@@ -60,6 +67,9 @@ Here is a brief summary. From this work, the following conclusions can be made:
 * second conclusion
 
 Here is how this work could be developed further in a future project.
+
+Limitations:
+* Biased towards predicting fires because of resampling
 
 ## References
 
