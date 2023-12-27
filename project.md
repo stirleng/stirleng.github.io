@@ -118,9 +118,9 @@ Stations 	WBAN:03171
 Begin Date 	2013-01-01 00:00
 End Date 	2022-12-30 23:59
 
-[2] https://lao.ca.gov/Publications/Report/4495
+[2] [`https://lao.ca.gov/Publications/Report/4495`](https://lao.ca.gov/Publications/Report/4495)
 
-[3] https://www.fire.ca.gov/what-we-do/research-and-development
+[3] [`https://www.fire.ca.gov/what-we-do/research-and-development`](https://www.fire.ca.gov/what-we-do/research-and-development)
 
 
 [Home](./)
