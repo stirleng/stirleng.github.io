@@ -2,7 +2,7 @@
 
 ***
 
-Code: https://github.com/stirleng/Fire_Hazard_Evaluation
+Code: [`https://github.com/stirleng/Fire_Hazard_Evaluation`](https://github.com/stirleng/Fire_Hazard_Evaluation)
 
 ## Introduction 
 
