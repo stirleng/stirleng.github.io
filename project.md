@@ -2,6 +2,8 @@
 
 ***
 
+Code: https://github.com/stirleng/Fire_Hazard_Evaluation
+
 ## Introduction 
 
 If you are one of the 39 million people currently living in California, then you have heard about our fire season. Wildfires are one of the greatest natural threats to the people of California. Every few years, preventative power outages cover the state, thousands are evacuated, and communities are burned to the ground.
